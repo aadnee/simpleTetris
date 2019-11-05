@@ -6,7 +6,7 @@ import android.view.SurfaceHolder;
 
 
 public class TetrisThread extends Thread {
-    private final static int sleepInterval = 500;
+    private final static int sleepInterval = 35;
     private SurfaceHolder surfaceHolder;
     private Board tetrisBoard;
     private boolean run = false;

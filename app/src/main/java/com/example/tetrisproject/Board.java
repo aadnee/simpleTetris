@@ -3,12 +3,14 @@ package com.example.tetrisproject;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Color;
+
 import java.util.Random;
 
 public class Board extends SurfaceView implements SurfaceHolder.Callback {
@@ -28,6 +30,7 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
     private int pieceColor;
     private final int MOVE_RIGHT = 1;
     private final int MOVE_LEFT = 2;
+    private long lastDropped = SystemClock.uptimeMillis();
 
     public Board(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,7 +46,12 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
             if (!pieceFalling) {
                 drawPiece(canvas);
             }
+            if(SystemClock.uptimeMillis()-lastDropped > 500){
+                yOffset++;
+                lastDropped = SystemClock.uptimeMillis();
+            }
         }
+
         updatePiece(canvas, tetrisThread.isPaused());
         updateBoard(canvas);
     }
@@ -133,7 +141,6 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
                     }
                 }
             }
-            if (pieceFalling && !isPaused) yOffset++;
         }
     }
 
@@ -215,15 +222,19 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
                 pieceColor = Color.WHITE;
         }
         piecePaint.setColor(pieceColor);
-        for (int row = 0; row < piece.length; row++) {
-            for (int col = 0; col < piece[row].length; col++) {
-                if (piece[row][col] != 0) {
+        piecePosition = piece;
+        pieceFalling = true;
+        int rotateRand = rnd.nextInt(5);
+        for (int i = 0; i <= rotateRand; i++){
+            rotate();
+        }
+        for (int row = 0; row < piecePosition.length; row++) {
+            for (int col = 0; col < piecePosition[row].length; col++) {
+                if (piecePosition[row][col] != 0) {
                     canvas.drawRect(xOffset * XSTEP + col * XSTEP, row * YSTEP, xOffset * XSTEP + col * XSTEP + XSTEP, row * YSTEP + YSTEP, piecePaint);
                 }
             }
         }
-        piecePosition = piece;
-        pieceFalling = true;
     }
 
     public TetrisThread getThread() {

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TetrisProject</string>
+    <string name="finish">Quit</string>
+    <string name="resume">Resume</string>
+    <string name="pause">Pause</string>
+    <string name="language">Select language</string>
+    <string name="help">Help</string>
+    <string name="helpDescription">Rotate and place the pieces in the right spots. -/Taps on the bottom 1/3 rotates the tetromino, while the right side of the upper part moves it towards the right side, and the left side to the left. -/Good luck!</string>
+</resources>
